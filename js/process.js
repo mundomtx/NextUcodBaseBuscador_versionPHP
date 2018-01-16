@@ -1,7 +1,36 @@
 var buscador = {
 	init: function(){
+    this.llenarDatosCiudad();
 		this.mostrarTodo()
 	},
+  llenarDatosCiudad: function(){
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "includes/backend.php", 
+      data: {"case":"DatosCiudad"},
+      success: function(result){
+        console.log(result)
+        if(result.rps==1){
+
+          for(var i = 0; i < result.result[0].length; i++){
+            $("#selectCiudad").append('<option value="'+result.result[0][i]+'">'+result.result[0][i]+'</option>');
+          }
+
+          for(var i = 0; i < result.result[1].length; i++){
+            $("#selectTipo").append('<option value="'+result.result[1][i]+'">'+result.result[1][i]+'</option>');
+          }
+
+          $('select').material_select();
+
+        }else{
+          $('select').material_select();
+        }
+      },error: function(){ 
+        $('select').material_select();
+      }
+    });
+  },
 	mostrarTodo: function(){
 
 		$("#mostrarTodos").click(function(event){
@@ -85,6 +114,7 @@ var buscador = {
 		//   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		//   xmlhttp.send("case=realTime");
 	}
+
 }
 
 buscador.init();

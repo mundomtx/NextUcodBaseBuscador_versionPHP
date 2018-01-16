@@ -14,7 +14,39 @@ switch ($caseProcess) {
 		echo $rps;
 		//print_r($buscadorNextU->datosJson());
 
+		break;
 
+	case 'DatosCiudad':
+
+		$buscadorNextU 	= new buscadorNextU("../data-1.json");
+		$datos 			= $buscadorNextU->datosJson();
+		$tipos = $ciudad= array();
+				
+		foreach($datos as $data){
+			if(!empty($data["Ciudad"])){
+				if(count($ciudad)>0){
+					if(!in_array($data["Ciudad"], $ciudad)){
+						array_push($ciudad, $data["Ciudad"]);
+					}
+				}else{
+					array_push($ciudad, $data["Ciudad"]);
+				}
+			}
+
+			if(!empty($data["Tipo"])){
+				if(count($tipos)>0){
+					if(!in_array($data["Tipo"], $tipos)){
+						array_push($tipos, $data["Tipo"]);
+					}
+				}else{
+					array_push($tipos, $data["Tipo"]);
+				}
+			}
+		}
+
+		$rps = json_encode(array("rps" => 1, "result" => array($ciudad, $tipos)));
+
+		echo $rps;
 
 		break;
 	
