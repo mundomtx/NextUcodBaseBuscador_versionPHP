@@ -37,10 +37,12 @@ var buscador = {
     $("#formulario").submit(function(event){
       event.preventDefault();
 
+      //Obtenemos los datos del formulario
       var ciudad  = $("select[name=ciudad]").val();
       var tipo    = $("select[name=tipo]").val()
       var precio  = $("input[name=precio]").val()
 
+      //Cuando se ejecute este proceso removemos los registros existentes
       $(".search").remove();
 
       $.ajax({
@@ -49,8 +51,7 @@ var buscador = {
         url: "includes/backend.php", 
         data:  {"case":"DatosFiltro", "ciudad":ciudad, "tipo":tipo, "precio":precio},
         success: function(result){
-          console.log(result);
-
+          //Si obtenemos resultado realizamos el siguiente proceso
           for(var i = 0; i < result.result.length; i++){
             $(".colContenido").append('<div class="tituloContenido  card search">'+
               '<div class="itemMostrado">'+
@@ -71,7 +72,6 @@ var buscador = {
           console.log('error');
         }
       });
-
      
     })
   },
@@ -109,32 +109,6 @@ var buscador = {
 	                		'</div>'+
 	                	'</div>')
                 	}
-
-
-
-
-                	// $(".colContenido").append('<div class="tituloContenido  card">'+
-                	// 	'<div class="itemMostrado">'+
-                	// 		'<img src="img/home.jpg">'+
-                	// 		'<p>'+
-                	// 		'<b>Dirección:</b> asdsdf <br>'+
-                	// 		'<b>Ciudad:</b> asa<br>'+
-                	// 		'<b>Teléfono:</b> asa<br>'+
-                	// 		'<b>Código Postal:</b> asa<br>'+
-                	// 		'<b>Tipo:</b> asa<br>'+
-                	// 		'<b>Precio:</b> <span class="precioTexto">$45,4</span><br>'+
-                	// 		'</p>'+
-                	// 	'</div>'+
-                	// '</div>')
-                	
-
-                  // $("button[name=no_autorizar_retiros]").removeAttr('disabled');
-
-                  // swal("<?php echo p_ad_men_a_355; ?>", result.message, "success");
-
-                  // $(".button_autorizar").html('<button type="button" name="autorizar_retiros" class="btn btn-labeled btn-success"><span class="btn-label"><i class="fa fa-check"></i></span>Autorizar retiros a mi dirección BTC configurada.</button>')
-
-                  // autorizar_retiros();
                 }else{
                   alert('ok1')
                 }
@@ -144,21 +118,6 @@ var buscador = {
             });
 		});
 
-
-
-		// xmlhttp.onreadystatechange = function(){
-		//     if(this.readyState == 4 && this.status == 200){
-		//       var data = JSON.parse(this.responseText)
-
-		//       if(!data.rps){
-		//         window.location = data.respuesta
-		//       }
-		//     }
-		//   };
-
-		//   xmlhttp.open("POST", "includes/backend.php", true);
-		//   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		//   xmlhttp.send("case=realTime");
 	}
 
 }
