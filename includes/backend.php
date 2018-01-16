@@ -49,6 +49,54 @@ switch ($caseProcess) {
 		echo $rps;
 
 		break;
+
+	case 'DatosFiltro':
+
+		$buscadorNextU 	= new buscadorNextU("../data-1.json");
+		$datos 			= $buscadorNextU->datosJson();
+		
+		$ciudad 		= $_POST["ciudad"];
+		$tipo 			= $_POST["tipo"];
+		$precio 		= explode(";", $_POST["precio"]);
+
+		$datos_mostrar 	= array();
+				
+		foreach($datos as $data){
+			$fag_ciudad = false;
+			$fag_tipo 	= false;
+			$fag_precio = false;
+
+			if(!empty($ciudad)){
+				if($data["Ciudad"]==$ciudad){
+					$fag_ciudad = true;
+				}
+			}else{
+				$fag_ciudad = true;
+			}
+
+			if(!empty($tipo)){
+				if($data["Tipo"]==$tipo){
+					$fag_tipo = true;
+				}
+			}else{
+				$fag_tipo = true;
+			}
+
+			$precio_limpio = str_replace(array("$",","), array("",""), $data["Precio"]);
+			if($precio_limpio>=$precio[0] && $precio_limpio<=$precio[1]){
+				$fag_precio = true;
+			}
+
+			if($fag_ciudad && $fag_tipo && $fag_precio){
+				array_push($datos_mostrar, $data);
+			}
+
+			$rps = json_encode(array("rps" => 1, "result" => $datos_mostrar));
+		}	
+
+		echo $rps;
+
+		break;
 	
 	default:
 		# code...

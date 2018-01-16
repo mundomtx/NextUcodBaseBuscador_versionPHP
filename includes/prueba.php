@@ -16,12 +16,16 @@ foreach($datos as $data){
 		}
 	}
 
+	echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+
+    echo str_replace(array("$",","), array("",""), $data["Precio"]);
+
 
 }
 
-	echo '<pre>';
-    print_r($ciudad);
-    echo '</pre>';
+
 
 
 ?>

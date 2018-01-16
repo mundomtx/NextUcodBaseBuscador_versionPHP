@@ -1,9 +1,10 @@
 var buscador = {
 	init: function(){
-    this.llenarDatosCiudad();
+    this.llenarDatosCiudadTipo();
 		this.mostrarTodo()
+    this.filtro()
 	},
-  llenarDatosCiudad: function(){
+  llenarDatosCiudadTipo: function(){
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -31,10 +32,55 @@ var buscador = {
       }
     });
   },
+  filtro: function(){
+
+    $("#formulario").submit(function(event){
+      event.preventDefault();
+
+      var ciudad  = $("select[name=ciudad]").val();
+      var tipo    = $("select[name=tipo]").val()
+      var precio  = $("input[name=precio]").val()
+
+      $(".search").remove();
+
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "includes/backend.php", 
+        data:  {"case":"DatosFiltro", "ciudad":ciudad, "tipo":tipo, "precio":precio},
+        success: function(result){
+          console.log(result);
+
+          for(var i = 0; i < result.result.length; i++){
+            $(".colContenido").append('<div class="tituloContenido  card search">'+
+              '<div class="itemMostrado">'+
+                '<img src="img/home.jpg">'+
+                '<p>'+
+                '<b>Dirección:</b> '+result.result[i].Direccion+' <br>'+
+                '<b>Ciudad:</b> '+result.result[i].Ciudad+'<br>'+
+                '<b>Teléfono:</b> '+result.result[i].Telefono+'<br>'+
+                '<b>Código Postal:</b> '+result.result[i].Codigo_Postal+'<br>'+
+                '<b>Tipo:</b> '+result.result[i].Tipo+'<br>'+
+                '<b>Precio:</b> <span class="precioTexto">'+result.result[i].Precio+'</span><br>'+
+                '</p>'+
+              '</div>'+
+            '</div>')
+          }
+
+        },error: function(){ 
+          console.log('error');
+        }
+      });
+
+     
+    })
+  },
 	mostrarTodo: function(){
 
 		$("#mostrarTodos").click(function(event){
 			event.preventDefault();
+
+      $(".search").remove();
 
 			$.ajax({
               type: "POST",
@@ -49,7 +95,7 @@ var buscador = {
                 		if(result.result[i].Direccion!='' || result.result[i].Direccion!=null || result.result[i].Direccion!=undefined){
 
                 		}
-                		$(".colContenido").append('<div class="tituloContenido  card">'+
+                		$(".colContenido").append('<div class="tituloContenido  card search">'+
 	                		'<div class="itemMostrado">'+
 	                			'<img src="img/home.jpg">'+
 	                			'<p>'+
